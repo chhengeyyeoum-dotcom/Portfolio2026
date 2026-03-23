@@ -9,12 +9,36 @@ document.querySelectorAll("a[href^='#']").forEach(anchor => {
 
 // BOOK SECTION INTERACTIVITY
 const bookData = {
-    'book-1': { title: 'The Midnight Library', author: 'Matt Haig', content: 'A profound exploration of infinite possibilities and second chances. This book explores the intersection of regret, hope, and self-discovery. Haig beautifully illustrates how every choice we make shapes our life, and that it\'s never too late to find meaning and happiness.' },
-    'book-2': { title: 'Atomic Habits', author: 'James Clear', content: 'A powerful guide to building good habits and breaking bad ones. Clear\'s approach focuses on small, incremental changes that compound over time. This book has fundamentally changed how I approach personal growth and daily routines.' },
-    'book-3': { title: 'Deep Work', author: 'Cal Newport', content: 'An essential read for anyone serious about their craft. Newport argues that the ability to focus intensely on cognitively demanding tasks is increasingly rare and valuable. This book inspired me to restructure my work habits.' },
-    'book-4': { title: 'The Design of Everyday Things', author: 'Don Norman', content: 'A foundational text for understanding user-centered design. Norman explains why some products are intuitive while others are confusing. Essential reading for anyone involved in design or UX.' },
-    'book-5': { title: 'Thinking Fast and Slow', author: 'Daniel Kahneman', content: 'An exploration of the two systems of thought that drive human decision-making. Kahneman\'s insights into cognitive biases have profoundly influenced how I think about judgment and risk.' },
-    'book-6': { title: 'Start with Why', author: 'Simon Sinek', content: 'A thought-provoking meditation on purpose and leadership. Sinek\'s concept of finding your why has become central to how I approach both work and personal projects.' }
+    'book-1': { title: 'Parker’s Astrology', author: 'Julia Parker & Derek Parker', published: '1991', content: `A comprehensive and timeless guide to understanding astrology in everyday life. This book introduces the foundations of zodiac signs, planets, houses, and birth charts. It explains how celestial movements influence personality, emotions, and life direction. Readers learn how to interpret their own natal chart with clarity and confidence.
+
+        The Parkers combine traditional knowledge with practical, modern application.
+
+        Astrology becomes not just a belief, but a tool for self-awareness and reflection. It offers insight into compatibility, relationships, and personal growth. Each element of the chart reveals a deeper layer of identity and potential. The book encourages readers to see patterns rather than coincidences. Ultimately, it empowers you to understand your life through the language of the stars.` },
+    'book-2': { title: 'Frequency: The Power of Personal Vibration', author: 'Penney Peirce', published: '2009', content: `Everything in the universe operates on frequency, including your thoughts, emotions, and experiences. This book explores how your personal vibration shapes the reality you live in every day. Penney Peirce explains how awareness of energy can transform the way you see yourself and others.
+
+        By recognizing emotional patterns, you begin to shift into higher, more positive states of being. The book connects intuition, consciousness, and energy into a practical life approach. It teaches how to release fear-based thinking and align with clarity and inner truth.
+
+        As your frequency rises, so does your ability to attract meaningful experiences. You become more present, intentional, and connected to your purpose. It is not about changing the world around you, but changing your internal state. Through that shift, your external reality begins to transform naturally.` },
+    'book-3': { title: 'Astrology & Numerology', author: 'Sofia Visconti', published: '2018', content: `Your life is influenced by more than what you can see; it is written in numbers and stars. This book combines astrology and numerology to reveal hidden patterns in your life path. It explains how your birth date holds powerful meaning about your personality and destiny.
+
+        Numbers are presented as energetic forces that shape decisions and opportunities. Astrological signs add another layer, revealing emotional and behavioral tendencies.
+
+        Together, they form a system that helps you better understand yourself and others. The book explores themes of success, relationships, and personal fulfillment. It provides simple interpretations that are accessible even for beginners. Readers are guided to discover their strengths, weaknesses, and life purpose. It is a journey into self-discovery through symbols that have existed for centuries.` },
+    'book-4': { title: 'The Creation Frequency', author: 'Mike Murphy', published: '2017', content: `Your thoughts are not passive; they are constantly shaping your reality. This book explores how aligning with the creation frequency influences your life path. Mike Murphy blends spirituality with practical mindset techniques. He emphasizes awareness as the key to intentional living.
+
+        By becoming conscious of your thoughts, you begin to direct your own outcomes.
+
+        The book encourages shifting from reaction to creation. It teaches how to replace doubt and fear with purpose and clarity. Readers are guided to tune into a higher state of thinking and feeling. This alignment allows opportunities and ideas to flow more naturally. Ultimately, it is about realizing that you are not just experiencing life; you are creating it.` },
+    'book-5': { title: 'The Art of Thinking Clearly', author: 'Rolf Dobelli', published: '2013', content: `Why do we make irrational decisions without realizing it? This book explores the hidden biases that influence how we think every day. Rolf Dobelli breaks down complex psychological concepts into simple insights. Each chapter highlights a specific thinking error, from overconfidence to confirmation bias.
+
+        These mental shortcuts often lead to poor judgment and unnecessary mistakes. By becoming aware of them, you gain control over your decision-making process. The book encourages slow, deliberate thinking instead of impulsive reactions.
+
+        It applies to business, relationships, and everyday life situations. Clear thinking becomes a skill that can be practiced and improved. In the end, understanding how you think is the first step to thinking better.` },
+    'book-6': { title: 'Building a StoryBrand', author: 'Donald Miller', published: '2017', content: `In a world full of noise, clarity is what makes a brand stand out. Donald Miller introduces the StoryBrand framework, inspired by classic storytelling. He explains that customers should be the hero, not the brand.
+
+        Businesses succeed when they position themselves as a guide with a clear solution. The book breaks down how to simplify messages so people instantly understand value. It focuses on empathy, clarity, and strong calls to action.
+
+        Through storytelling structure, brands become more relatable and trustworthy. Marketing is no longer about complexity, but about connection. Each chapter offers practical steps to refine communication and strategy. The result is a brand message that resonates, engages, and converts.` }
 };
 
 function initLinearCarousel(carousel) {
@@ -30,7 +54,10 @@ function initLinearCarousel(carousel) {
     const autoplay = carousel.getAttribute('data-autoplay') === 'true';
     const interval = Number(carousel.getAttribute('data-interval')) || 4500;
     
-    let currentIndex = 0;
+    const configuredStartIndex = Number(carousel.getAttribute('data-start-index'));
+    let currentIndex = Number.isFinite(configuredStartIndex)
+        ? Math.min(Math.max(Math.floor(configuredStartIndex), 0), total - 1)
+        : 0;
     let timerId = null;
     let isDragging = false;
     let startX = 0;
@@ -221,7 +248,7 @@ function updateDetailPanel(bookId) {
     const book = bookData[bookId];
     const detailPanel = document.getElementById('book-detail-panel');
     if (book) {
-        detailPanel.innerHTML = `<h4 class="book-detail-title">${book.title}</h4><p style="color: #d5b15d; margin-bottom: 15px; font-weight: 500;">by ${book.author}</p><p class="book-detail-content">${book.content}</p>`;
+        detailPanel.innerHTML = `<h4 class="book-detail-title">${book.title}</h4><p style="color: #d5b15d; margin-bottom: 15px; font-weight: 500; display: flex; justify-content: space-between; align-items: center;"><span>by ${book.author}</span><span>Published in ${book.published || 'N/A'}</span></p><p class="book-detail-content">${book.content}</p>`;
     }
 }
 
