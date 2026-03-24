@@ -20,10 +20,6 @@ body {
     box-shadow: 0 10px 30px rgba(31, 41, 55, 0.15);
 }
 
-.divider {
-    background-color: #119ff0;
-}
-
 
 .hero-section {
     margin-top: 0;
@@ -64,6 +60,20 @@ body {
     margin-bottom: 0;
 }
 
+/* SECTION FONT SCALING (EDUCATION / EXPERIENCE) */
+.section .form-label {
+    font-size: clamp(0.68rem, 1.3vw, 0.8rem);
+}
+
+.section p {
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    line-height: 1.65;
+}
+
+.section ul {
+    font-size: clamp(0.85rem, 1.3vw, 1rem);
+}
+
 .form-label {
     font-style: capitalize;
     font-size: 0.8rem;
@@ -82,12 +92,12 @@ body {
 }
 
 p {
-    font-weight: 300;
+    font-weight: 400;
     color: #999999;
 }
 
 ul {
-    font-weight: 100;
+    font-weight: 400;
     color: #999999;
 }
 
@@ -298,6 +308,10 @@ ul {
     margin: 10px;
     color: #ffffff;
     transition: 0.3s;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
 }
 
 .social-icons {
@@ -487,7 +501,8 @@ ul {
 
     .hero-section .col-md-5,
     .hero-section .col-md-7 {
-        max-width: 420px;
+        width: 100%;
+        max-width: 540px;
         margin-inline: auto;
     }
 
